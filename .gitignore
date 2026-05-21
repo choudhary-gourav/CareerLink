@@ -1,0 +1,18 @@
+# Dependency directories
+node_modules/
+careerlink/node_modules/
+JobProject/target/
+
+# Build outputs
+careerlink/build/
+
+# IDE & OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Secrets
+.env
+*.env
+JobProject/src/main/resources/application-local.properties

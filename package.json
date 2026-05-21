@@ -1,0 +1,12 @@
+{
+  "name": "project1-root",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev --prefix job-board",
+    "dev:api": "cd JobProject && mvnw.cmd spring-boot:run",
+    "dev:full": "npx concurrently \"npm run dev --prefix job-board\" \"cd JobProject && mvnw.cmd spring-boot:run\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

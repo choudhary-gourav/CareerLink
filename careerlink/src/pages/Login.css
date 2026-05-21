@@ -1,0 +1,358 @@
+.login-page {
+  min-height: 100vh;
+  background: var(--bg-primary);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-bg-grid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(79,110,247,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79,110,247,0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+.login-bg-glow {
+  position: fixed;
+  bottom: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(79,110,247,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.login-nav {
+  position: relative;
+  z-index: 10;
+  border-bottom: 1px solid var(--border);
+}
+
+.login-nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.login-nav-inner .navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.login-nav-inner div:nth-child(2) {
+  display: flex;
+  gap: 24px;
+}
+
+.login-container {
+  flex: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 60px 32px;
+  display: flex;
+  align-items: center;
+  gap: 80px;
+  width: 100%;
+}
+
+.login-card {
+  flex: 0 0 420px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+}
+
+.login-header {
+  margin-bottom: 28px;
+}
+
+.login-header h2 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.login-header p {
+  color: var(--text-secondary);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.login-tabs {
+  display: flex;
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  padding: 4px;
+  margin-bottom: 24px;
+}
+
+.tab {
+  flex: 1;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab.active {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.social-btn {
+  width: 100%;
+  padding: 11px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  margin-bottom: 20px;
+}
+.social-btn:hover {
+  border-color: var(--accent);
+  background: var(--bg-card);
+}
+
+.divider {
+  text-align: center;
+  position: relative;
+  margin-bottom: 20px;
+}
+.divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--border);
+}
+.divider span {
+  position: relative;
+  background: var(--bg-card);
+  padding: 0 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-group input {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-size: 14px;
+  color: var(--text-primary);
+  transition: border-color 0.2s;
+}
+.form-group input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(79,110,247,0.1);
+}
+.form-group input::placeholder { color: var(--text-muted); }
+
+.forgot-link {
+  color: var(--accent);
+  font-size: 12px;
+  text-decoration: none;
+}
+.forgot-link:hover { text-decoration: underline; }
+
+.login-submit {
+  width: 100%;
+  padding: 12px;
+  margin-top: 4px;
+  font-size: 15px;
+}
+
+.login-footer-text {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 20px;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+  font-family: var(--font-body);
+}
+.link-btn:hover { text-decoration: underline; }
+
+
+.login-side {
+  flex: 1;
+}
+
+.login-side-content {
+  padding: 20px;
+}
+
+.side-badge {
+  display: inline-block;
+  background: rgba(79,110,247,0.1);
+  border: 1px solid rgba(79,110,247,0.2);
+  color: var(--accent);
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 20px;
+}
+
+.login-side-content h3 {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+
+.login-side-content p {
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.7;
+  margin-bottom: 36px;
+  max-width: 380px;
+}
+
+.side-stats {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 36px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.side-features {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.side-feature {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.feature-dot {
+  color: var(--accent);
+  font-size: 10px;
+}
+
+
+@media (max-width: 992px) {
+  .login-container {
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+    padding: 40px 24px;
+  }
+  
+  .login-side {
+    display: none; 
+  }
+
+  .login-card {
+    flex: 1;
+    width: 100%;
+    max-width: 460px;
+  }
+}
+
+@media (max-width: 768px) {
+  .login-nav-inner {
+    padding: 0 16px;
+  }
+  
+  .login-nav-inner div:nth-child(2) {
+    display: none; 
+  }
+
+  .login-card {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-nav-inner div:nth-child(3) {
+    display: none; 
+  }
+}
+
+
+
