@@ -1,0 +1,33 @@
+# ── Version control ──────────────────────────────────────────
+.git
+.gitignore
+.gitattributes
+
+# ── IDE / editor ─────────────────────────────────────────────
+.idea
+.vscode
+*.iml
+
+# ── Maven build output (never send target/ into the image) ───
+target
+
+# ── Local-only config (never in image) ───────────────────────
+.env
+.env.*
+src/main/resources/application-local.properties
+
+# ── Logs ─────────────────────────────────────────────────────
+*.log
+logs/
+
+# ── Node (frontend lives in a different folder) ──────────────
+node_modules
+npm-debug.log
+
+# ── Docs ─────────────────────────────────────────────────────
+README.md
+HELP.md
+
+# ── OS files ─────────────────────────────────────────────────
+.DS_Store
+Thumbs.db

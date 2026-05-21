@@ -5,7 +5,6 @@ import com.example.JobProject.Repository.CredentialRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +15,6 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins ="http:
 public class CredentialController {
 
     private final CredentialRepository credentialRepository;
@@ -84,4 +82,3 @@ public class CredentialController {
                 .findFirst();
     }
 }
-

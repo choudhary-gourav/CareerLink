@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: jobproject-api
+    runtime: docker
+    plan: free
+
+    # The Spring Boot project root (contains Dockerfile)
+    rootDir: JobProject
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+
+    # Render health check — Spring Actuator /actuator/health
+    # Render will wait for 200 OK before marking service healthy
+    healthCheckPath: /actuator/health
+
+    # Environment variables
+    envVars:
+      # Render sets PORT automatically; we also define it explicitly for clarity
+      - key: PORT
+        value: "8080"
+
+      # ⚠ Set this as a SECRET in Render dashboard — do NOT hardcode here
+      - key: MONGODB_URI
+        sync: false   # sync: false = you must enter value in Render UI
+
+      - key: MONGODB_DATABASE
+        value: Gourav
+
+      # ⚠ Set this in Render dashboard to your Vercel frontend URL
+      # e.g. https://careerlink.vercel.app
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false
