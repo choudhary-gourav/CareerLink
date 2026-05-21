@@ -4,10 +4,10 @@ services:
     runtime: docker
     plan: free
 
-    # Render root is the repository root; Dockerfile resides in the JobProject subfolder
-    rootDir: .
-    dockerfilePath: JobProject/Dockerfile
-    dockerContext: JobProject
+    # Backend service lives in the JobProject subfolder.
+    rootDir: JobProject
+    dockerfilePath: Dockerfile
+    dockerContext: .
 
     # Render health check – Spring Actuator /actuator/health
     # Render will wait for 200 OK before marking service healthy
