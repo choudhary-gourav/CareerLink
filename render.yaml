@@ -4,12 +4,12 @@ services:
     runtime: docker
     plan: free
 
-    # The Spring Boot project root (contains Dockerfile)
-    rootDir: JobProject
-    dockerfilePath: ./Dockerfile
-    dockerContext: .
+    # Render root is the repository root; Dockerfile resides in the JobProject subfolder
+    rootDir: .
+    dockerfilePath: JobProject/Dockerfile
+    dockerContext: JobProject
 
-    # Render health check — Spring Actuator /actuator/health
+    # Render health check – Spring Actuator /actuator/health
     # Render will wait for 200 OK before marking service healthy
     healthCheckPath: /actuator/health
 
