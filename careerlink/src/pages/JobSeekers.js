@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { apiUrl } from '../api';
 import './JobSeekers.css';
 
 const JOBS = [
@@ -27,7 +28,7 @@ export default function JobSeekers() {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await fetch('/post');
+        const res = await fetch(apiUrl('/post'));
         if (res.ok) {
           const data = await res.json();
           setJobs(data);
@@ -44,7 +45,7 @@ export default function JobSeekers() {
     if (!search.trim()) {
       
       try {
-        const res = await fetch('/post');
+        const res = await fetch(apiUrl('/post'));
         if (res.ok) {
           const data = await res.json();
           setJobs(data);
@@ -55,7 +56,7 @@ export default function JobSeekers() {
     }
     
     try {
-      const res = await fetch(`/post/${search}`, {
+      const res = await fetch(apiUrl(`/post/${search}`), {
         method: 'POST',
       });
       if (res.ok) {

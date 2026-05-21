@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
+import { apiUrl } from "../api";
 import "./Login.css";
 
 export default function Login() {
@@ -23,7 +24,7 @@ export default function Login() {
   const submitLogin = async () => {
     try {
       setError("");
-      const response = await fetch("/api/login", {
+      const response = await fetch(apiUrl("/api/login"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -63,7 +64,7 @@ export default function Login() {
 
     try {
       setError("");
-      const response = await fetch("/api/submit", {
+      const response = await fetch(apiUrl("/api/submit"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: fullName, email, password }),

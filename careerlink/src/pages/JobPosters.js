@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { apiUrl } from '../api';
 import './JobPosters.css';
 
 const STATS = [
@@ -38,7 +39,7 @@ export default function JobPosters() {
   useEffect(() => {
     const loadJobs = async () => {
       try {
-        const res = await fetch('/post');
+        const res = await fetch(apiUrl('/post'));
         if (!res.ok) throw new Error(`Failed to fetch jobs: ${res.status}`);
         const data = await res.json();
         setJobs(data);
@@ -65,7 +66,7 @@ export default function JobPosters() {
         techs: form.techs.split(',').map(t => t.trim()).filter(Boolean)
       };
 
-      const res = await fetch('/post', {
+      const res = await fetch(apiUrl('/post'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -75,7 +76,7 @@ export default function JobPosters() {
         setShowModal(false);
         setForm({ profile: '', company: '', type: 'Full-time', location: '', salary: '', exp: '', techs: '', description: '' });
         
-        const jobsRes = await fetch('/post');
+        const jobsRes = await fetch(apiUrl('/post'));
         if (jobsRes.ok) {
           const data = await jobsRes.json();
           setJobs(data);
