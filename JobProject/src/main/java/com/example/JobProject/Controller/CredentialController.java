@@ -30,32 +30,53 @@ public class CredentialController {
 
     @PostMapping({"/api/login", "/credential/login"})
     public ResponseEntity<Map<String, Object>> login(@RequestBody Credential credential) {
-        String email = getSubmittedEmail(credential);
-        String password = credential.getPassword();
+        try {
+            String rawUri = System.getenv("MONGODB_URI");
+            System.out.println("=== DEBUG MONGODB_URI ===");
+            System.out.println("MONGODB_URI: " + (rawUri != null ? rawUri.replaceAll("(?<=:)[^@:]+(?=@)", "*****") : "null"));
+            System.out.println("=========================");
+            
+            String email = getSubmittedEmail(credential);
+            String password = credential.getPassword();
 
-        if (email == null || password == null) {
-            return ResponseEntity.badRequest().body(Map.of(
-                    "success", false,
-                    "message", "Email and password are required"
-            ));
-        }
+            if (email == null || password == null) {
+                return ResponseEntity.badRequest().body(Map.of(
+                        "success", false,
+                        "message", "Email and password are required"
+                ));
+            }
 
-        return findMatchingCredential(email, password)
-                .filter(savedCredential -> password.equals(savedCredential.getPassword()))
-                .map(savedCredential -> ResponseEntity.ok(Map.<String, Object>of(
+            Optional<Credential> matchedCredentialOpt = findMatchingCredential(email, password);
+
+            if (matchedCredentialOpt.isPresent()) {
+                Credential savedCredential = matchedCredentialOpt.get();
+                
+                // Map.of throws NullPointerException if any value is null.
+                // We use HashMap to safely handle potential null values (e.g. if name is null in DB).
+                Map<String, Object> userMap = new java.util.HashMap<>();
+                userMap.put("id", savedCredential.getId());
+                userMap.put("name", savedCredential.getName());
+                userMap.put("email", savedCredential.getEmail());
+                userMap.put("role", savedCredential.getRole() != null ? savedCredential.getRole() : "CANDIDATE");
+
+                return ResponseEntity.ok(Map.of(
                         "success", true,
                         "message", "Login successful",
-                        "user", Map.of(
-                                "id", savedCredential.getId(),
-                                "name", savedCredential.getName(),
-                                "email", savedCredential.getEmail(),
-                                "role", savedCredential.getRole() != null ? savedCredential.getRole() : "CANDIDATE"
-                        )
-                )))
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
+                        "user", userMap
+                ));
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
                         "success", false,
                         "message", "Invalid email or password"
-                )));
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Logs the full error in Render logs
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                    "success", false,
+                    "message", "Internal Server Error: " + e.getMessage()
+            ));
+        }
     }
 
     private String getSubmittedEmail(Credential credential) {
