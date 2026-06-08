@@ -183,12 +183,11 @@ export default function Login() {
     <div className="login-page">
       {isVerifyingGoogle && (
         <div className="google-loading-overlay">
-          <div className="google-spinner">
-            <div className="google-spinner-ring" />
-            <div className="google-spinner-ring-inner" />
+          <div className="minimal-loader">
+            <div className="minimal-logo">◈</div>
+            <div className="minimal-ring" />
           </div>
-          <div className="google-loading-text">Connecting to Google...</div>
-          <div className="google-loading-subtext">Verifying credentials and logging you in</div>
+          <div className="minimal-text">authenticating</div>
         </div>
       )}
       <div className="login-bg-grid" />

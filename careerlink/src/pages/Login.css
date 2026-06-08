@@ -354,79 +354,85 @@
   }
 }
 
-/* Google Verification Loading Overlay */
+/* Aesthetic Minimalist Verification Loading Overlay */
 .google-loading-overlay {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: rgba(10, 10, 12, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(8, 8, 10, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 20px;
-  animation: fadeIn 0.3s ease;
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.google-spinner {
+.minimal-loader {
   position: relative;
-  width: 64px;
-  height: 64px;
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.google-spinner-ring {
-  position: absolute;
-  inset: 0;
-  border: 4px solid transparent;
-  border-top-color: var(--accent);
-  border-right-color: #4285F4; /* Google blue */
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-.google-spinner-ring-inner {
-  position: absolute;
-  inset: 8px;
-  border: 4px solid transparent;
-  border-bottom-color: #34A853; /* Google green */
-  border-left-color: #FBBC05; /* Google yellow */
-  border-radius: 50%;
-  animation: spin-reverse 1.2s linear infinite;
-}
-
-.google-loading-text {
-  font-family: var(--font-display);
-  font-size: 18px;
-  font-weight: 600;
+.minimal-logo {
+  font-size: 28px;
   color: var(--text-primary);
-  letter-spacing: -0.01em;
-  animation: pulse 1.5s ease-in-out infinite;
-  margin-top: 10px;
+  animation: pulse-glow 2s infinite ease-in-out;
+  z-index: 2;
 }
 
-.google-loading-subtext {
-  font-size: 13.5px;
+.minimal-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgba(79, 110, 247, 0.4); /* Faint accent indicator */
+  border-radius: 50%;
+  animation: spin 1.2s infinite cubic-bezier(0.5, 0.1, 0.5, 0.9);
+}
+
+.minimal-text {
+  font-family: var(--font-display), sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
   color: var(--text-secondary);
+  opacity: 0.8;
+  animation: pulse-opacity 1.5s infinite ease-in-out;
+  margin-left: 0.25em; /* Offset letter-spacing */
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
-@keyframes spin-reverse {
-  to { transform: rotate(-360deg); }
+@keyframes pulse-glow {
+  0%, 100% {
+    transform: scale(0.95);
+    opacity: 0.8;
+    text-shadow: 0 0 0px transparent;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+    text-shadow: 0 0 12px rgba(79, 110, 247, 0.4);
+  }
+}
+
+@keyframes pulse-opacity {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.9; }
 }
 
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
 }
 
 
