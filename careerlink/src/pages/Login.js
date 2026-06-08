@@ -7,6 +7,15 @@ import "./Login.css";
 const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 const isGoogleClientConfigured = googleClientId && googleClientId !== "your-google-client-id-here.apps.googleusercontent.com";
 
+const getGoogleButtonWidth = () => {
+  const width = window.innerWidth;
+  if (width <= 340) return "240";
+  if (width <= 380) return "280";
+  if (width <= 420) return "310";
+  if (width <= 480) return "330";
+  return "348";
+};
+
 export default function Login() {
   const [tab, setTab] = useState("signin");
   const [email, setEmail] = useState("");
@@ -16,10 +25,12 @@ export default function Login() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [isVerifyingGoogle, setIsVerifyingGoogle] = useState(false);
   const navigate = useNavigate();
 
   const handleCredentialResponse = async (response) => {
     try {
+      setIsVerifyingGoogle(true);
       setError("");
       const res = await fetch(apiUrl("/api/google-login"), {
         method: "POST",
@@ -39,6 +50,7 @@ export default function Login() {
           (data && data.message) || (typeof data === "string" && data) ||
             "Google Sign-In failed. Please try again.",
         );
+        setIsVerifyingGoogle(false);
         return;
       }
 
@@ -47,6 +59,7 @@ export default function Login() {
     } catch (err) {
       console.error("Google sign-in error:", err);
       setError("Unable to complete Google Sign-In. Please try again.");
+      setIsVerifyingGoogle(false);
     }
   };
 
@@ -63,7 +76,7 @@ export default function Login() {
           { 
             theme: "outline", 
             size: "large", 
-            width: "360", // Match container width or layout
+            width: getGoogleButtonWidth(),
             text: "continue_with",
             shape: "rectangular"
           }
@@ -168,7 +181,16 @@ export default function Login() {
 
   return (
     <div className="login-page">
-      {}
+      {isVerifyingGoogle && (
+        <div className="google-loading-overlay">
+          <div className="google-spinner">
+            <div className="google-spinner-ring" />
+            <div className="google-spinner-ring-inner" />
+          </div>
+          <div className="google-loading-text">Connecting to Google...</div>
+          <div className="google-loading-subtext">Verifying credentials and logging you in</div>
+        </div>
+      )}
       <div className="login-bg-grid" />
       <div className="login-bg-glow" />
 
