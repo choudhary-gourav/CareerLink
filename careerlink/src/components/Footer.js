@@ -42,7 +42,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="footer-bottom">
-        <span>© 2024 CareerLink Professional. All rights reserved.</span>
+        <span>© 2024 Gourav Choudhary. All rights reserved.</span>
       </div>
     </footer>
   );
