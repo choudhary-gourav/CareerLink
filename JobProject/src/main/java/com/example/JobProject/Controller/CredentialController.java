@@ -79,6 +79,102 @@ public class CredentialController {
         }
     }
 
+    @PostMapping("/api/google-login")
+    public ResponseEntity<Map<String, Object>> googleLogin(@RequestBody Map<String, String> request) {
+        try {
+            String idToken = request.get("idToken");
+            if (idToken == null || idToken.isBlank()) {
+                return ResponseEntity.badRequest().body(Map.of(
+                        "success", false,
+                        "message", "ID token is required"
+                ));
+            }
+
+            // Verify the token by calling Google's tokeninfo API
+            String verifyUrl = "https://oauth2.googleapis.com/tokeninfo?id_token=" + idToken;
+            org.springframework.web.client.RestTemplate restTemplate = new org.springframework.web.client.RestTemplate();
+            
+            Map<String, Object> tokenInfo;
+            try {
+                tokenInfo = restTemplate.getForObject(verifyUrl, Map.class);
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
+                        "success", false,
+                        "message", "Invalid Google ID token: Verification failed"
+                ));
+            }
+
+            if (tokenInfo == null || tokenInfo.containsKey("error") || tokenInfo.containsKey("error_description")) {
+                String errMsg = tokenInfo != null && tokenInfo.get("error_description") != null 
+                        ? (String) tokenInfo.get("error_description") 
+                        : "Invalid token";
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
+                        "success", false,
+                        "message", "Google verification failed: " + errMsg
+                ));
+            }
+
+            String email = (String) tokenInfo.get("email");
+            String name = (String) tokenInfo.get("name");
+            String aud = (String) tokenInfo.get("aud");
+
+            if (email == null || email.isBlank()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                        "success", false,
+                        "message", "Email not found in Google ID Token"
+                ));
+            }
+
+            // Validate Audience if client ID is configured
+            String envClientId = System.getenv("GOOGLE_CLIENT_ID");
+            if (envClientId != null && !envClientId.isBlank() && !envClientId.equals("your-google-client-id-here.apps.googleusercontent.com")) {
+                if (!envClientId.equals(aud)) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
+                            "success", false,
+                            "message", "Invalid token audience. Client ID mismatch."
+                    ));
+                }
+            }
+
+            // Find or create credential
+            List<Credential> credentials = credentialRepository.findAllByEmailIgnoreCase(email);
+            if (credentials.isEmpty()) {
+                credentials = credentialRepository.findAllByWorkEmailIgnoreCase(email);
+            }
+
+            Credential userCredential;
+            if (credentials.isEmpty()) {
+                // Register new user from Google profile
+                userCredential = new Credential();
+                userCredential.setEmail(email.trim());
+                userCredential.setName(name != null ? name.trim() : email.split("@")[0]);
+                userCredential.setRole("CANDIDATE");
+                userCredential.setPassword(""); // No password needed for Google SSO
+                userCredential = credentialRepository.save(userCredential);
+            } else {
+                userCredential = credentials.get(0);
+            }
+
+            Map<String, Object> userMap = new java.util.HashMap<>();
+            userMap.put("id", userCredential.getId());
+            userMap.put("name", userCredential.getName());
+            userMap.put("email", userCredential.getEmail());
+            userMap.put("role", userCredential.getRole() != null ? userCredential.getRole() : "CANDIDATE");
+
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "message", "Login successful",
+                    "user", userMap
+            ));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                    "success", false,
+                    "message", "Internal Server Error: " + e.getMessage()
+            ));
+        }
+    }
+
     private String getSubmittedEmail(Credential credential) {
         if (credential.getEmail() != null && !credential.getEmail().isBlank()) {
             return credential.getEmail().trim();
